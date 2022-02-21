@@ -14,13 +14,13 @@
     <div class="flex flex-col">
       <ul class="link-bar">
         <li>
-          <a href="https://discord.com">
+          <a href="https://discord.com/K2Kk5Kj6PP">
             Join the
             <strong>Discord</strong>
           </a>
         </li>
         <li>
-          <a href="https://reddit.com">
+          <a href="https://reddit.com/r/ForzaOpenTunes">
             Join the
             <strong>Subreddit</strong>
           </a>
