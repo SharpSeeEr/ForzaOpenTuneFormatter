@@ -74,4 +74,8 @@
     color: var(--light-blue);
     font-weight: 700;
   }
+
+  .footer-text {
+    font-size:small;
+  }
 }

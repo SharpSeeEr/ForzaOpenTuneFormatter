@@ -47,7 +47,7 @@ header p.view small {
 }
 
 .link-bar li {
-  @apply min-w-[80px];
+  @apply min-w-[90px];
 }
 
 .link-bar li + li {

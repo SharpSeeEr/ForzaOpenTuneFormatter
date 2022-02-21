@@ -1,3 +1,6 @@
+<link rel="stylesheet"
+      href="../../../../Downloads/ForzaOpenTuneFormatter/ForzaOpenTuneFormatter/src/assets/css/_header.css"
+>
 <template>
   <header>
     <div class="md:mr-8 text-center md:text-left">
@@ -38,4 +41,47 @@
       </p>
     </div>
   </header>
+  <!--<div class="flex">
+    <ul class="link-bar">
+      <li>
+        <a href="https://forzaopentunes.com">
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/formatter">
+          Formatter
+        </a>
+      </li>
+      <li>
+        <a href="/tuning">
+          Tuning Guide</a>
+      </li>
+      <li>
+        <a href="/halloffame">
+          Hall of Fame
+        </a>
+      </li>
+      <li>
+        <a href="/tools">
+          Tools
+        </a>
+      </li>
+      <li>
+        <a href="/about">
+          About
+        </a>
+      </li>
+      <li>
+        <a href="/telemetry">
+          Telemetry
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/Ldalvik/ForzaOpenTuneFormatter/issues">
+          Report issues
+        </a>
+      </li>
+    </ul>
+  </div>-->
 </template>
