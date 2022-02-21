@@ -14,9 +14,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', v: string): void,
 }>();
 
-const options = computed(() => {
-  return enumToOptions(props.type);
-})
+const options = computed(() => enumToOptions(props.type));
 
 function onUpdate(value: string) {
   emit('update:modelValue', value);
@@ -27,7 +25,7 @@ function onUpdate(value: string) {
     :modelValue="modelValue"
     :label="label"
     :options="options"
-    :root-class="rootClass"
+    :rootClass="rootClass"
     @update:modelValue="onUpdate"
   />
 </template>
