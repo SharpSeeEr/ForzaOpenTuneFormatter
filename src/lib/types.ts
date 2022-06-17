@@ -106,6 +106,8 @@ export enum TireCompound {
   offroad = 'Offroad',
   snow = 'Snow',
   drag = 'Drag',
+  whitewall = 'Vintage Whitewall',
+  vintage = 'Vintage Race',
 }
 
 export enum RimStyleType {
