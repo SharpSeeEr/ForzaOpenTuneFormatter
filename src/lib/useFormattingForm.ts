@@ -12,7 +12,7 @@ import { RouteParams } from 'vue-router';
 import { getDrivetrain } from './generator';
 import { byFullname } from './models';
 import getTestForm from './testForm';
-import getFormFromBase64 from './base64Form';
+import { getFormFromBase64 } from './base64Form';
 import {
   PressureUnit,
   SpringRateUnit,
@@ -39,7 +39,6 @@ function createFormattingForm(base64Tune: string): SettingsForm {
   if (base64Tune) {
     try {
       const form = getFormFromBase64(base64Tune);
-      console.log(form);
       return form;
     } catch (error: any) {
       console.error(`Could not parse base64 tune:\n${error.message}`);

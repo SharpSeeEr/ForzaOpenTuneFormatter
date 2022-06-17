@@ -15,9 +15,128 @@ import {
   PIClass,
 } from './types';
 
-export default function getFormFromBase64(base64Tune: string): SettingsForm {
+const mangleLookup: any = {
+  make: 'mk',
+  model: 'md',
+  tune: 't',
+  build: 'b',
+  stats: 's',
+  tires: 'tr',
+  front: 'f',
+  rear: 'r',
+  units: 'u',
+  ratios: 'rt',
+  na: 'n',
+  springs: 'sp',
+  rideHeight: 'rh',
+  damping: 'd',
+  bump: 'bm',
+  type: 'tp',
+  name: 'nm',
+  aero: 'a',
+  brake: 'br',
+  diff: 'di',
+  accel: 'ac',
+  decel: 'dc',
+  center: 'c',
+  conversions: 'cn',
+  engine: 'e',
+  intake: 'i',
+  intakeManifold: 'im',
+  carburator: 'ca',
+  fuelSystem: 'f',
+  ignition: 'ig',
+  exhaust: 'ex',
+  camshaft: 'cm',
+  valves: 'v',
+  displacement: 'ds',
+  pistons: 'p',
+  turbo: 'tb',
+  twinTurbo: 'tt',
+  supercharger: 'sc',
+  centrifugalSupercharger: 'cs',
+  intercooler: 'in',
+  oilCooling: 'o',
+  flywheel: 'fw',
+  platformAndHandling: 'ph',
+  brakes: 'brk',
+  frontArb: 'fa',
+  rearArb: 'ra',
+  chassisReinforcement: 'cr',
+  weightReduction: 'wr',
+  drivetrain: 'dt',
+  clutch: 'cl',
+  transmission: 'trm',
+  driveline: 'dl',
+  differential: 'df',
+  tiresAndRims: 'tar',
+  compound: 'cmp',
+  width: 'wd',
+  rimStyle: 'rs',
+  rimSize: 'rsz',
+  trackWidth: 'tw',
+  aeroAndAppearance: 'aa',
+  frontBumper: 'fb',
+  rearBumper: 'rb',
+  rearWing: 'rw',
+  sideSkirts: 'sk',
+  hood: 'h',
+  pi: 'pi',
+  classification: 'cls',
+  hp: 'hp',
+  torque: 'trq',
+  weight: 'wg',
+  balance: 'bl',
+  topSpeed: 'ts',
+  zeroToSixty: 'zs',
+  zeroToHundred: 'zh',
+  shareCode: 'scd',
+  gears: 'g',
+  length: 'l',
+  camber: 'cmb',
+  caster: 'cst',
+  bias: 'bs',
+  pressure: 'ps',
+  aspiration: 'ap',
+  bodyKit: 'bk',
+};
+
+// Reverse mangleLookup
+const unmangleLookup: any = Reflect.ownKeys(mangleLookup).reduce(
+  (prev, cur) => Object.assign(prev, { [mangleLookup[cur]]: cur }),
+  {},
+);
+
+// Replace the objects keys with abbreviations to save characters, reducing the base64 strings length
+function mangleObject(object: any, reverse = false): any {
+  const lookup = reverse ? unmangleLookup : mangleLookup;
+  const mangled: any = {};
+  const keys = Reflect.ownKeys(object);
+
+  for (let i = 0; i < keys.length; i += 1) {
+    const key = keys[i];
+    const isObject = typeof object[key] === 'object';
+    const mangledKey = lookup[key] || key;
+
+    if (isObject) {
+      mangled[mangledKey] = mangleObject(object[key]);
+    } else {
+      mangled[mangledKey] = object[key];
+    }
+  }
+
+  return mangled;
+}
+
+export function getBase64FromForm(form: SettingsForm) {
+  const mangled = mangleObject(form);
+  return window.btoa(JSON.stringify(mangled));
+}
+
+export function getFormFromBase64(base64Tune: string): SettingsForm {
   const json = window.atob(base64Tune);
-  const form = JSON.parse(json);
+  const parsed = JSON.parse(json);
+  const form = mangleObject(parsed, true);
 
   if (!form || !Reflect.ownKeys(form).length) {
     throw new Error('Undefined or empty object.');

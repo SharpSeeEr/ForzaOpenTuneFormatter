@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { generateRedditMarkdown } from '../lib/generator';
 import { useFormattingForm } from '../lib/useFormattingForm';
+import { getBase64FromForm } from '../lib/base64Form';
 
 const route = useRoute();
 const { form } = useFormattingForm();
@@ -35,13 +36,13 @@ function onCopyClick() {
   }
 }
 
-async function onCopyURLClick() {
+async function onShareURLClick() {
   const base64TuneParam = route?.params?.base64Tune;
   const location = base64TuneParam ? window.location.href.replace(`/${base64TuneParam}`, '') : window.location.href;
 
   const url = [
     location,
-    window.btoa(JSON.stringify(form)),
+    getBase64FromForm(form),
   ].join('/');
 
   try {
@@ -78,7 +79,7 @@ async function onCopyURLClick() {
       <button
         type="button"
         class="w-full mt-4 mb-4"
-        @click="onCopyURLClick"
+        @click="onShareURLClick"
       >
         {{ shareButtonText }}
       </button>
