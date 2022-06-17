@@ -1,34 +1,64 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { generateRedditMarkdown } from '../lib/generator';
 import { useFormattingForm } from '../lib/useFormattingForm';
 
+const route = useRoute();
 const { form } = useFormattingForm();
 
-const buttonText = ref('Copy To Clipboard');
-const timeout = ref(0);
+const copyButtonText = ref('Copy To Clipboard');
+const shareButtonText = ref('Share');
+const copyTimeout = ref(0);
+const shareTimeout = ref(0);
 
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
 const text = computed(() => generateRedditMarkdown(form));
 
 onBeforeUnmount(() => {
-  clearTimeout(timeout.value);
+  clearTimeout(copyTimeout.value);
+  clearTimeout(shareTimeout.value);
 });
 
 function onCopyClick() {
   try {
     navigator.clipboard.writeText(text.value);
-    buttonText.value = 'Copied!';
-    timeout.value = window.setTimeout(() => {
-      buttonText.value = 'Copy To Clipboard';
+    copyButtonText.value = 'Copied!';
+    copyTimeout.value = window.setTimeout(() => {
+      copyButtonText.value = 'Copy To Clipboard';
     }, 2000);
   } catch (error) {
-    buttonText.value = 'Clipboard Error - Copy Manually';
+    copyButtonText.value = 'Clipboard Error - Copy Manually';
     textareaRef.value?.select();
     textareaRef.value?.focus();
   }
 }
+
+async function onCopyURLClick() {
+  const base64TuneParam = route?.params?.base64Tune;
+  const location = base64TuneParam ? window.location.href.replace(`/${base64TuneParam}`, '') : window.location.href;
+
+  const url = [
+    location,
+    window.btoa(JSON.stringify(form)),
+  ].join('/');
+
+  try {
+    if (navigator.share && window.location.protocol.includes('https')) {
+      await navigator.share({ url });
+    } else {
+      navigator.clipboard.writeText(url);
+      shareButtonText.value = 'Copied!';
+      shareTimeout.value = window.setTimeout(() => {
+        shareButtonText.value = 'Share';
+      }, 2000);
+    }
+  } catch (error) {
+    window.prompt('Copy this URL and share it with others:', url);
+  }
+}
+
 </script>
 <template>
   <section>
@@ -43,7 +73,14 @@ function onCopyClick() {
         class="large w-full mt-4 mb-4"
         @click="onCopyClick"
       >
-        {{ buttonText }}
+        {{ copyButtonText }}
+      </button>
+      <button
+        type="button"
+        class="w-full mt-4 mb-4"
+        @click="onCopyURLClick"
+      >
+        {{ shareButtonText }}
       </button>
       <!-- <button type="submit" class="large w-full mb-4">Generate</button> -->
       <textarea
