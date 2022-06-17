@@ -44,7 +44,7 @@ const mangleLookup: any = {
   intake: 'i',
   intakeManifold: 'im',
   carburator: 'ca',
-  fuelSystem: 'f',
+  fuelSystem: 'fs',
   ignition: 'ig',
   exhaust: 'ex',
   camshaft: 'cm',
@@ -115,11 +115,12 @@ function mangleObject(object: any, reverse = false): any {
 
   for (let i = 0; i < keys.length; i += 1) {
     const key = keys[i];
-    const isObject = typeof object[key] === 'object';
+    const isObject =
+      typeof object[key] === 'object' && !Array.isArray(object[key]);
     const mangledKey = lookup[key] || key;
 
     if (isObject) {
-      mangled[mangledKey] = mangleObject(object[key]);
+      mangled[mangledKey] = mangleObject(object[key], reverse);
     } else {
       mangled[mangledKey] = object[key];
     }
@@ -341,7 +342,7 @@ export function getFormFromBase64(base64Tune: string): SettingsForm {
     },
     stats: {
       pi: form.stats?.pi || 0,
-      classification: form.stats?.classification || PIClass.A,
+      classification: (form.stats?.classification as PIClass) || PIClass.A,
       hp: form.stats?.hp || 0,
       torque: form.stats?.torque || 0,
       weight: form.stats?.weight || 0,
