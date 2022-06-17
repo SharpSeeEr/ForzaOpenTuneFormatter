@@ -38,8 +38,7 @@ const testing = false;
 function createFormattingForm(base64Tune: string): SettingsForm {
   if (base64Tune) {
     try {
-      const form = getFormFromBase64(base64Tune);
-      return form;
+      return getFormFromBase64(base64Tune);
     } catch (error: any) {
       console.error(`Could not parse base64 tune:\n${error.message}`);
       // Do nothing
