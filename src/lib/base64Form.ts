@@ -1,3 +1,5 @@
+import { diff } from 'deep-object-diff';
+import getDefaultForm from './defaultForm';
 import {
   PressureUnit,
   SpringRateUnit,
@@ -130,7 +132,14 @@ function mangleObject(object: any, reverse = false): any {
 }
 
 export function getBase64FromForm(form: SettingsForm) {
-  const mangled = mangleObject(form);
+  const formDiff: any = diff(getDefaultForm(), form);
+
+  // diff will convert arrays to objects, we need to revert that by replacing it with the original values
+  if (formDiff.tune?.gears?.ratios) {
+    formDiff.tune.gears.ratios = form.tune.gears.ratios;
+  }
+
+  const mangled = mangleObject(formDiff);
   return window.btoa(JSON.stringify(mangled));
 }
 
