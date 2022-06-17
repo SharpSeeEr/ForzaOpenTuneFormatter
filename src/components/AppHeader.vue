@@ -31,7 +31,7 @@
       </ul>
 
       <div class="-mb-2 text-center md:text-left">
-        <router-link class="nav-link" to="/">Formatter</router-link>
+        <router-link class="nav-link" to="/formatter">Formatter</router-link>
         <router-link class="nav-link" to="/calculator">Calculator</router-link>
       </div>
     </div>
