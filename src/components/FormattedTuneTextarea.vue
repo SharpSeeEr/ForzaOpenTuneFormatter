@@ -9,7 +9,7 @@ const route = useRoute();
 const { form } = useFormattingForm();
 
 const copyButtonText = ref('Copy To Clipboard');
-const shareButtonText = ref('Share');
+const shareButtonText = ref('Share URL');
 const copyTimeout = ref(0);
 const shareTimeout = ref(0);
 
@@ -52,11 +52,11 @@ async function onShareURLClick() {
       navigator.clipboard.writeText(url);
       shareButtonText.value = 'Copied!';
       shareTimeout.value = window.setTimeout(() => {
-        shareButtonText.value = 'Share';
+        shareButtonText.value = 'Share URL';
       }, 2000);
     }
   } catch (error) {
-    window.prompt('Copy this URL and share it with others:', url);
+    window.prompt('Copy this URL to share it with others:', url);
   }
 }
 
